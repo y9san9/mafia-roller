@@ -10,10 +10,10 @@ class Model(private val controller: MafiaController){
             = controller.auth(phone1, phone2, phone3, phone4, codeHandler)
 
     fun startGame(){
-        controller.onGameInvitation = { (user, code) ->
+        controller.gameInvitationReceived = { (user, code) ->
             controller.joinGame(user, code)
         }
-        controller.onAllJoined = {
+        controller.allJoined = {
             controller.forceStart()
             sleep(1000)
             controller.leaveOthers()

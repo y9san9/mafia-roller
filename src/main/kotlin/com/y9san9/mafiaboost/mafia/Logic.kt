@@ -2,7 +2,6 @@ package com.y9san9.mafiaboost.mafia
 
 import BOT_ID
 import CHAT_ID
-import com.github.badoualy.telegram.tl.api.TLKeyboardButtonCallback
 import com.github.badoualy.telegram.tl.api.TLKeyboardButtonUrl
 import com.github.badoualy.telegram.tl.api.TLReplyInlineMarkup
 import com.y9san9.mafiaboost.utils.apihelper.*
@@ -17,7 +16,7 @@ fun MafiaController.handler(accountNumber: Int) = updatesHandler {
         when(it.message){
             GAME_MESSAGE -> (it.replyMarkup as? TLReplyInlineMarkup)?.also { markup ->
                 (markup.rows[0].buttons[0] as? TLKeyboardButtonUrl)?.also { button ->
-                    onGameInvitation(accountNumber to button.url.replace(INVITE_CODE_REGEX, ""))
+                    gameInvitationReceived(accountNumber to button.url.replace(INVITE_CODE_REGEX, ""))
                 }
             }
         }

@@ -14,7 +14,6 @@ import com.github.badoualy.telegram.api.TelegramClient
 import com.github.badoualy.telegram.api.utils.toInputPeer
 import com.github.badoualy.telegram.tl.api.*
 import com.y9san9.mafiaboost.utils.apihelper.auth
-import com.y9san9.mafiaboost.utils.apihelper.getChannel
 import com.y9san9.mafiaboost.utils.apihelper.getUser
 import com.y9san9.mafiaboost.utils.apihelper.loadChannel
 import java.lang.Thread.sleep
@@ -28,8 +27,8 @@ const val FORCE_START_GAME_COMMAND = "/start"
 class MafiaController {
     var playersJoined = 0
 
-    var onGameInvitation: (Pair<Int, String>) -> Unit = {}
-    var onAllJoined: () -> Unit = {}
+    var gameInvitationReceived: (Pair<Int, String>) -> Unit = {}
+    var allJoined: () -> Unit = {}
     var gameFinished: () -> Unit = {}
 
     private val app = TelegramApp(API_ID, API_HASH, MODEL, SYSTEM_VERSION, APP_VERSION, LANG_CODE)
@@ -67,7 +66,7 @@ class MafiaController {
             playersJoined++
             if (playersJoined == 4) {
                 sleep(300)
-                onAllJoined()
+                allJoined()
             }
         }
     }
