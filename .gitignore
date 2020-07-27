@@ -2,3 +2,4 @@
 /.gradle/
 /src/main/kotlin/configSource.kt
 /properties/
+/build/

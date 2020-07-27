@@ -1,5 +1,13 @@
+/**
+ * @param repo username/repo; e.g. y9san9/kotlogram-wrapper
+ */
+fun DependencyHandlerScope.github(repo: String, tag: String = "-SNAPSHOT") = implementation(
+    repo.split("/").let { (username, repo) ->
+        "com.github.${username}:${repo}:${tag}"
+    }
+)
+
 plugins {
-    java
     kotlin("jvm") version "1.3.72"
 }
 
@@ -13,7 +21,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("com.github.badoualy:kotlogram:+")
+    github("y9san9/kotlogram-wrapper")
 }
 
 configure<JavaPluginConvention> {
