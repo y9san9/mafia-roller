@@ -17,3 +17,14 @@ Open cmd and exec: <br>
 
 ## For Linux
 You can just check steps before, that will be similar
+
+## For android
+- Install [Termux](https://play.google.com/store/apps/details?id=com.termux)
+
+Open and run:
+- `pkg install dx`
+- `pkg install git`
+- `git clone https://github.com/y9san9/mafia-roller/`
+- `cd mafia-roller`
+- `dx --dex --output=app-dexed.jar app.jar`
+- `dalvikvm -cp app-dexed.jar com.y9san9.mafiaboost.MainKt`
