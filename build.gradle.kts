@@ -13,7 +13,9 @@ fun DependencyHandlerScope.github(repo: String, tag: String = "-SNAPSHOT") = imp
 fun RepositoryHandler.jitpack() = maven("https://jitpack.io")
 
 plugins {
+    application
     kotlin("jvm") version "1.3.72"
+    id("com.github.johnrengelman.shadow") version "5.0.0"
 }
 
 group = "com.y9san9.mafiaboost"
@@ -34,6 +36,17 @@ dependencies {
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
 }
+
+application {
+    mainClassName = "com.y9san9.mafiaboost.MainKt"
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes(mapOf("Main-Class" to application.mainClassName))
+    }
+}
+
 tasks {
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"

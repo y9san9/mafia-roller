@@ -34,9 +34,8 @@ fun KotlogramClient.handler(controller: MafiaController, accountNumber: Int) = c
             }
             if (accountNumber == 0 && (it.message?.contains("окончена", true) == true
                         || it.message?.contains("закончилась", true) == true)
-                || it.message?.contains("недостаточно", true) == true
-            )
-                gameFinished()
+                || it.message?.contains("Недостаточно", true) == true
+            ) gameFinished()
         }
         message({
             it.to.isUser assert true
