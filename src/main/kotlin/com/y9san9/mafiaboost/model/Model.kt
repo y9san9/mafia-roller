@@ -16,7 +16,6 @@ class Model(private val controller: MafiaController){
             controller.forceStart()
         }
         controller.gameFinished = {
-            sleep(1000)
             controller.startGame()
         }
         controller.startGame()

@@ -7,7 +7,6 @@ import MODEL
 import SYSTEM_VERSION
 import com.github.badoualy.telegram.api.TelegramApp
 import com.y9san9.kotlogram.KotlogramClient
-import java.lang.Thread.sleep
 
 
 const val START_GAME_COMMAND = "/game"
@@ -67,7 +66,6 @@ class MafiaController(apiId: Int, apiHash: String, val chatId: Int) {
         if(controllers[user].join(code)) {
             playersJoined++
             if (playersJoined == 4) {
-                sleep(300)
                 allJoined()
             }
         }
