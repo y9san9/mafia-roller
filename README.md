@@ -9,7 +9,7 @@ Clone project and run com.y9san9.mafiaboost.Main.kt
 ## Easy way Windows
 - Download [Java](https://www.java.com/ru/download/) (Do not forget to add PATH variable)
 - Download [Git](https://git-scm.com/downloads)
-Open cmd and exec: <br>
+<br>Open cmd and exec: <br>
 - `git clone https://github.com/y9san9/mafia-roller/`
 - `cd mafia-roller`
 - `java -jar app.jar`
