@@ -6,8 +6,7 @@ import java.lang.Thread.sleep
 
 class Model(private val controller: MafiaController){
 
-    fun auth(phone1: String, phone2: String, phone3: String, phone4: String, codeHandler: (Int) -> String)
-            = controller.auth(phone1, phone2, phone3, phone4, codeHandler)
+    fun auth(handler: MafiaController.AuthDSL.() -> Unit) = controller.auth(handler)
 
     fun startGame(){
         controller.gameInvitationReceived = { (user, code) ->
@@ -15,8 +14,6 @@ class Model(private val controller: MafiaController){
         }
         controller.allJoined = {
             controller.forceStart()
-            sleep(1000)
-            controller.leaveOthers()
         }
         controller.gameFinished = {
             sleep(1000)
