@@ -8,7 +8,7 @@ import java.io.File
 import java.util.*
 
 
-val scriptDir = System.getProperty("user.dir") ?: ""
+val scriptDir = (System.getProperty("user.dir") ?: "") + "/properties"
 
 object MafiaBooster {
     private val scanner = Scanner(System.`in`)
@@ -19,7 +19,7 @@ object MafiaBooster {
         var apiId = 0
         var apiHash = ""
 
-        val dataFile = ApiStorage(File(scriptDir, "/properties/apiData"))
+        val dataFile = ApiStorage(File(scriptDir, "apiData"))
         dataFile.get()?.let { (id, hash) ->
             apiId = id
             apiHash = hash
