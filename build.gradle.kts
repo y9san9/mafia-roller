@@ -29,8 +29,8 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
+    github("y9san9/kotlogram-wrapper", "beta-1-2-2")
     github("badoualy/kotlogram", "1.0.0-RC3")
-    github("y9san9/kotlogram-wrapper", "beta-1-1")
 }
 
 configure<JavaPluginConvention> {

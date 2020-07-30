@@ -1,12 +1,8 @@
 package com.y9san9.mafiaboost.mafia
 
 import BOT_ID
-import com.github.badoualy.telegram.tl.api.TLKeyboardButtonCallback
-import com.github.badoualy.telegram.tl.api.TLKeyboardButtonUrl
-import com.github.badoualy.telegram.tl.api.TLReplyInlineMarkup
 import com.y9san9.kotlogram.KotlogramClient
 import com.y9san9.kotlogram.utils.assert
-import com.y9san9.mafiaboost.utils.click
 import com.y9san9.mafiaboost.utils.safe
 import java.lang.Thread.sleep
 
@@ -41,10 +37,9 @@ fun KotlogramClient.handler(controller: MafiaController, accountNumber: Int) = c
             it.from.id assert BOT_ID
         }) {
             when (it.message) {
-                GAME_MESSAGE -> (it.replyMarkup as? TLReplyInlineMarkup)?.also { markup ->
-                    (markup.rows[0].buttons[0] as? TLKeyboardButtonUrl)?.also { button ->
-                        gameInvitationReceived(accountNumber to button.url.replace(INVITE_CODE_REGEX, ""))
-                    }
+                GAME_MESSAGE -> it.replyMarkup!![0, 0].also { button ->
+                    println(button.url)
+                    gameInvitationReceived(accountNumber to button.url!!.replace(INVITE_CODE_REGEX, ""))
                 }
             }
             var lack = false
@@ -73,7 +68,7 @@ fun KotlogramClient.handler(controller: MafiaController, accountNumber: Int) = c
             }
             if (accountNumber == 0) {
                 if(it.message == HEAL_MESSAGE)
-                    (it.replyMarkup as TLReplyInlineMarkup).rows[0].buttons[0].click(it)
+                    it.replyMarkup!![0, 0].click()
                 if(it.message?.contains(GAME_END) == true) {
                     thread = Thread(newGameRunnable).apply { start() }
                 }
