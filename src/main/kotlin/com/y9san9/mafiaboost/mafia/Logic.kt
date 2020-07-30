@@ -7,6 +7,7 @@ import com.github.badoualy.telegram.tl.api.TLReplyInlineMarkup
 import com.y9san9.kotlogram.KotlogramClient
 import com.y9san9.kotlogram.utils.assert
 import com.y9san9.mafiaboost.utils.click
+import com.y9san9.mafiaboost.utils.safe
 import java.lang.Thread.sleep
 
 
@@ -14,6 +15,8 @@ const val GAME_MESSAGE = "Ведётся набор в игру"
 const val HEAL_MESSAGE = "Кого будем лечить?"
 const val GAME_END = "Игра завершена"
 const val ALL_DIED = "Все игроки мертвы!"
+const val PLAYER_LACK = "Недостаточно игроков для начала игры..."
+
 val ROLE_MESSAGES = arrayOf(
     "Ты - \uD83D\uDC68\uD83C\uDFFC Мирный житель. \n" +
             "Твоя задача вычислить мафию и на городском собрании линчевать засранцев",
@@ -25,6 +28,11 @@ val ROLE_MESSAGES = arrayOf(
 val INVITE_CODE_REGEX = Regex(".*\\?start=")
 
 fun KotlogramClient.handler(controller: MafiaController, accountNumber: Int) = controller.apply {
+    val newGameRunnable = Runnable {
+        safe { sleep(25000) }
+        if(!Thread.interrupted())
+            gameFinished(0)
+    }
     updates {
         var thread = Thread {}
         message({
@@ -39,12 +47,13 @@ fun KotlogramClient.handler(controller: MafiaController, accountNumber: Int) = c
                     }
                 }
             }
-            if (accountNumber == 0 && it.message?.contains(Regex("окончена|Недостаточно")) == true) {
+            var lack = false
+            if (accountNumber == 0 && (it.message?.contains(Regex("окончена")) == true
+                        || (it.message == PLAYER_LACK).also { bool -> lack = bool }
+                        || it.message?.contains(ALL_DIED) == true)) {
                 thread.interrupt()
-                gameFinished()
+                gameFinished(if(lack) 1 else 0)
             }
-            if(accountNumber == 0 && it.message?.contains(ALL_DIED) == true)
-                gameFinished()
         }
         message({
             it.to.isUser assert true
@@ -52,17 +61,21 @@ fun KotlogramClient.handler(controller: MafiaController, accountNumber: Int) = c
         }) {
             val index = ROLE_MESSAGES.indexOf(it.message)
             val userController = controller.controllers[accountNumber]
-            if(index != -1 && (index == 2 || accountNumber != 0))
+            if(index != -1) {
+                if(accountNumber == 0){
+                    if(index == 2){
+                        userController.leave()
+                        thread = Thread(newGameRunnable).apply { start() }
+                    }
+                } else {
                     userController.leave()
+                }
+            }
             if (accountNumber == 0) {
                 if(it.message == HEAL_MESSAGE)
                     (it.replyMarkup as TLReplyInlineMarkup).rows[0].buttons[0].click(it)
                 if(it.message?.contains(GAME_END) == true) {
-                    thread = Thread {
-                        sleep(15000)
-                        if(!Thread.interrupted())
-                            gameFinished()
-                    }.apply { start() }
+                    thread = Thread(newGameRunnable).apply { start() }
                 }
             }
         }

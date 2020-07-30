@@ -15,7 +15,9 @@ class Model(private val controller: MafiaController){
         controller.allJoined = {
             controller.forceStart()
         }
-        controller.gameFinished = {
+        controller.gameFinished = { code ->
+            if(code == 1)
+                sleep(5000)
             controller.startGame()
         }
         controller.startGame()

@@ -18,7 +18,11 @@ class MafiaController(apiId: Int, apiHash: String, val chatId: Int) {
 
     var gameInvitationReceived: (Pair<Int, String>) -> Unit = {}
     var allJoined: () -> Unit = {}
-    var gameFinished: () -> Unit = {}
+
+    /**
+     * when code == 1 then you need wait some seconds
+     */
+    var gameFinished: (code: Int) -> Unit = {}
 
     private val app = TelegramApp(apiId, apiHash, MODEL, SYSTEM_VERSION, APP_VERSION, LANG_CODE)
 
@@ -63,7 +67,8 @@ class MafiaController(apiId: Int, apiHash: String, val chatId: Int) {
     fun forceStart() = client1.sendMessage(controller1.channelPeer, FORCE_START_GAME_COMMAND)
 
     fun joinGame(user: Int, code: String){
-        if(controllers[user].join(code)) {
+        println(playersJoined)
+        if(controllers[user].join(code).also(::println)) {
             playersJoined++
             if (playersJoined == 4) {
                 allJoined()
