@@ -18,7 +18,7 @@ Open cmd and exec: <br>
 ## For Linux
 You can just check steps before, that will be similar
 
-## For android
+## For android (Not working at the moment)
 - Install [Termux](https://play.google.com/store/apps/details?id=com.termux)
 
 Open and run:
