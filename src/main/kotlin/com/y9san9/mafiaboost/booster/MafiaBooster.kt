@@ -67,7 +67,7 @@ object MafiaBooster {
                 is Event.AllJoined -> println("> Все игроки присоединились, начинаю игру")
                 is Event.GameFinished -> println(
                     if(it.lack) "> Недостаточно игроков, делаю рестарт через пару секунд"
-                    else "> Игра завершена. +20 монет, начинаю набор"
+                    else "> Игра завершена, начинаю новый набор"
                 )
             }
         }
