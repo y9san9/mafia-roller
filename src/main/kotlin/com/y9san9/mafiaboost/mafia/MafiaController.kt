@@ -5,8 +5,8 @@ import BOT_ID
 import LANG_CODE
 import MODEL
 import SYSTEM_VERSION
-import com.github.badoualy.telegram.api.TelegramApp
 import com.y9san9.kotlogram.KotlogramClient
+import com.y9san9.kotlogram.models.TelegramApp
 
 
 const val START_GAME_COMMAND = "/game"
@@ -67,8 +67,7 @@ class MafiaController(apiId: Int, apiHash: String, val chatId: Int) {
     fun forceStart() = client1.sendMessage(controller1.channelPeer, FORCE_START_GAME_COMMAND)
 
     fun joinGame(user: Int, code: String){
-        println(playersJoined)
-        if(controllers[user].join(code).also(::println)) {
+        if(controllers[user].join(code)) {
             playersJoined++
             if (playersJoined == 4) {
                 allJoined()

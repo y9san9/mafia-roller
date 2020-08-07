@@ -25,9 +25,10 @@ val INVITE_CODE_REGEX = Regex(".*\\?start=")
 
 fun KotlogramClient.handler(controller: MafiaController, accountNumber: Int) = controller.apply {
     val newGameRunnable = Runnable {
-        safe { sleep(25000) }
-        if(!Thread.interrupted())
+        safe {
+            sleep(25000)
             gameFinished(0)
+        }
     }
     updates {
         var thread = Thread {}
@@ -38,7 +39,6 @@ fun KotlogramClient.handler(controller: MafiaController, accountNumber: Int) = c
         }) {
             when (it.message) {
                 GAME_MESSAGE -> it.replyMarkup!![0, 0].also { button ->
-                    println(button.url)
                     gameInvitationReceived(accountNumber to button.url!!.replace(INVITE_CODE_REGEX, ""))
                 }
             }

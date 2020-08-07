@@ -1,6 +1,7 @@
 package com.y9san9.mafiaboost.booster
 
 import com.y9san9.mafiaboost.mafia.MafiaController
+import com.y9san9.mafiaboost.model.Event
 import com.y9san9.mafiaboost.model.Model
 import com.y9san9.mafiaboost.utils.ApiStorage
 import com.y9san9.mafiaboost.utils.refresh
@@ -59,6 +60,16 @@ object MafiaBooster {
             }
         }
 
-        model.startGame()
+        println("> Запускаюсь...")
+        model.startGame {
+            when(it) {
+                is Event.InvitationReceived -> println("> Игрок ${it.user} получил приглашение с кодом ${it.code}")
+                is Event.AllJoined -> println("> Все игроки присоединились, начинаю игру")
+                is Event.GameFinished -> println(
+                    if(it.lack) "> Недостаточно игроков, делаю рестарт через пару секунд"
+                    else "> Игра завершена. +20 монет, начинаю набор"
+                )
+            }
+        }
     }
 }
